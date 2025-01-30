@@ -1,11 +1,12 @@
 package com.ust.employee_service.service.impl;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.ust.employee_service.entity.Employee;
 import com.ust.employee_service.repository.EmployeeRepository;
 import com.ust.employee_service.service.EmployeeService;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -27,25 +28,41 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee updateEmployee(Long id, Employee employee) {
-        Employee existingEmployee = employeeRepository.findById(id)
+    public Employee updateEmployee(String employeeid, Employee employee) {
+        Employee existingEmployee = employeeRepository.findById(employeeid)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
         existingEmployee.setName(employee.getName());
         existingEmployee.setDesignation(employee.getDesignation());
         existingEmployee.setSkills(employee.getSkills());
-        existingEmployee.setIsAvailable(employee.getIsAvailable());
+        existingEmployee.setStatus(employee.getStatus());
         return employeeRepository.save(existingEmployee);
     }
 
     @Override
-    public void deleteEmployee(Long id) {
-        employeeRepository.deleteById(id);
+    public void deleteEmployee(String employeeid) {
+        employeeRepository.deleteById(employeeid);
     }
 
     @Override
-    public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
+    public Employee getEmployeeById(String employeeid) {
+        return employeeRepository.findById(employeeid)
+                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + employeeid));
     }
 
+    @Override
+    public List<Employee> getEmployeesByProjectId(Long projectId) {
+        return employeeRepository.findByProjectId(projectId);
+    }
+
+    @Override
+    public Employee assignEmployeeToProject(String employeeid, Long projectId) {
+        Employee existingEmployee = employeeRepository.findById(employeeid)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+        // Set the projectId and change availability
+        existingEmployee.setProjectId(projectId);
+        existingEmployee.setStatus(Employee.Status.ASSIGNED);
+
+        return employeeRepository.save(existingEmployee);
+    }
 }

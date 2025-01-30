@@ -1,7 +1,12 @@
 package com.ust.employee_service.repository;
 
-import com.ust.employee_service.entity.Employee;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+import com.ust.employee_service.entity.Employee;
+
+public interface EmployeeRepository extends JpaRepository<Employee, String> {
+
+    List<Employee> findByProjectId(Long projectId);
 }
