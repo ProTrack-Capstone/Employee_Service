@@ -10,6 +10,7 @@ public interface EmployeeService {
     Employee updateEmployee(String employeeid, Employee employee);
     void deleteEmployee(String employeeid);
     Employee getEmployeeById(String employeeid);
-    List<Employee> getEmployeesByProjectId(Long projectId);
-    Employee assignEmployeeToProject(String employeeid, Long projectId);
+    List<Employee> getEmployeesByProjectId(String projectId);
+    Employee assignEmployeeToProject(String employeeid, String projectId);
+
 }

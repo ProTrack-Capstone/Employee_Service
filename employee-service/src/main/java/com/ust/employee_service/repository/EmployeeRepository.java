@@ -8,5 +8,5 @@ import com.ust.employee_service.entity.Employee;
 
 public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
-    List<Employee> findByProjectId(Long projectId);
+    List<Employee> findByProjectId(String projectId);
 }

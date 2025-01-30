@@ -41,8 +41,19 @@ public class Employee {
     private LocalDate joiningDate;
 
     @Column(name = "project_id") // Assuming a foreign key to the project
-    private Long projectId;
+    private String projectId;
 
+    @Column(name="current_salary",nullable = false)
+    private Long currentSalary;
+
+    @Column(name="bankName",nullable = false)
+    private String bankName;
+
+    @Column(name="accountNumber",nullable = false)
+    private String accountNumber;
+
+    @Column(name="panNumber",nullable = false)
+    private String panNumber;
 
     public enum Status {
 
@@ -56,8 +67,9 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String employeeid, String name, String designation, String skills, Status status, LocalDate joiningDate,
-            Long projectId) {
+    public Employee(String employeeid, String name, String designation, String skills, Status status,
+            LocalDate joiningDate, String projectId, Long currentSalary, String bankName, String accountNumber,
+            String panNumber) {
         this.employeeid = employeeid;
         this.name = name;
         this.designation = designation;
@@ -65,6 +77,10 @@ public class Employee {
         this.status = status;
         this.joiningDate = joiningDate;
         this.projectId = projectId;
+        this.currentSalary = currentSalary;
+        this.bankName = bankName;
+        this.accountNumber = accountNumber;
+        this.panNumber = panNumber;
     }
 
     // Getters and Setters
@@ -109,11 +125,11 @@ public class Employee {
         this.joiningDate = joiningDate;
     }
 
-    public Long getProjectId() {
+    public String getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(Long projectId) {
+    public void setProjectId(String projectId) {
         this.projectId = projectId;
     }
 
@@ -124,4 +140,43 @@ public class Employee {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    public Long getCurrentSalary() {
+        return currentSalary;
+    }
+
+
+    public void setCurrentSalary(Long currentSalary) {
+        this.currentSalary = currentSalary;
+    }
+
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+
+    public String getPanNumber() {
+        return panNumber;
+    }
+
+
+    public void setPanNumber(String panNumber) {
+        this.panNumber = panNumber;
+    }
+
 }
