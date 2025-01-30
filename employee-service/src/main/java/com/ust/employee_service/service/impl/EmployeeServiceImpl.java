@@ -31,15 +31,24 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee updateEmployee(String employeeid, Employee employee) {
-        Employee existingEmployee = employeeRepository.findById(employeeid)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
-        existingEmployee.setName(employee.getName());
-        existingEmployee.setDesignation(employee.getDesignation());
-        existingEmployee.setSkills(employee.getSkills());
-        existingEmployee.setStatus(employee.getStatus());
-        return employeeRepository.save(existingEmployee);
-    }
+public Employee updateEmployee(String employeeid, Employee employee) {
+    Employee existingEmployee = employeeRepository.findById(employeeid)
+            .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+    existingEmployee.setName(employee.getName());
+    existingEmployee.setDesignation(employee.getDesignation());
+    existingEmployee.setSkills(employee.getSkills());
+    existingEmployee.setStatus(employee.getStatus());
+    existingEmployee.setJoiningDate(employee.getJoiningDate());
+    existingEmployee.setProjectId(employee.getProjectId());
+    existingEmployee.setCurrentSalary(employee.getCurrentSalary());  // Ensure this line exists
+    existingEmployee.setBankName(employee.getBankName());
+    existingEmployee.setAccountNumber(employee.getAccountNumber());
+    existingEmployee.setPanNumber(employee.getPanNumber());
+
+    return employeeRepository.save(existingEmployee);
+}
+
 
     @Override
     public void deleteEmployee(String employeeid) {
