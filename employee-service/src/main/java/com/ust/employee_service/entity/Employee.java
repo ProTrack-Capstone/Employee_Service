@@ -63,7 +63,6 @@ public class Employee {
 
     }
 
-
     public Employee() {
     }
 
@@ -83,12 +82,11 @@ public class Employee {
         this.panNumber = panNumber;
     }
 
-    // Getters and Setters
-    public String getemployeeId() {
+    public String getEmployeeid() {
         return employeeid;
     }
 
-    public void setemployeeId(String employeeid) {
+    public void setEmployeeid(String employeeid) {
         this.employeeid = employeeid;
     }
 
@@ -116,6 +114,13 @@ public class Employee {
         this.skills = skills;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     public LocalDate getJoiningDate() {
         return joiningDate;
@@ -133,23 +138,13 @@ public class Employee {
         this.projectId = projectId;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
     public Long getCurrentSalary() {
         return currentSalary;
     }
 
-
     public void setCurrentSalary(Long currentSalary) {
         this.currentSalary = currentSalary;
     }
-
 
     public String getBankName() {
         return bankName;
@@ -159,24 +154,22 @@ public class Employee {
         this.bankName = bankName;
     }
 
-
     public String getAccountNumber() {
         return accountNumber;
     }
-
 
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 
-
     public String getPanNumber() {
         return panNumber;
     }
-
 
     public void setPanNumber(String panNumber) {
         this.panNumber = panNumber;
     }
 
+
+    
 }
