@@ -19,6 +19,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee addEmployee(Employee employee) {
+        if (employee.getStatus() == null) {
+            employee.setStatus(Employee.Status.UNASSIGNED);
+        }
         return employeeRepository.save(employee);
     }
 
@@ -50,12 +53,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> getEmployeesByProjectId(Long projectId) {
+    public List<Employee> getEmployeesByProjectId(String projectId) {
         return employeeRepository.findByProjectId(projectId);
     }
 
     @Override
-    public Employee assignEmployeeToProject(String employeeid, Long projectId) {
+    public Employee assignEmployeeToProject(String employeeid, String projectId) {
         Employee existingEmployee = employeeRepository.findById(employeeid)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
 

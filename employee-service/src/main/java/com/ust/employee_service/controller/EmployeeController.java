@@ -37,7 +37,7 @@ public class EmployeeController {
 
     // PUT endpoint to assign employee to a project
     @PutMapping("/{employeeid}/assign/{projectId}")
-    public ResponseEntity<Employee> assignEmployeeToProject(@PathVariable String employeeid, @PathVariable Long projectId) {
+    public ResponseEntity<Employee> assignEmployeeToProject(@PathVariable String employeeid, @PathVariable String projectId) {
         return ResponseEntity.ok(employeeService.assignEmployeeToProject(employeeid, projectId));
     }
 
@@ -58,7 +58,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/projects/{projectId}")
-    public ResponseEntity<List<Employee>> getEmployeesByProject(@PathVariable Long projectId) {
+    public ResponseEntity<List<Employee>> getEmployeesByProject(@PathVariable String projectId) {
         List<Employee> employees = employeeService.getEmployeesByProjectId(projectId);
         return ResponseEntity.ok(employees);
     }
