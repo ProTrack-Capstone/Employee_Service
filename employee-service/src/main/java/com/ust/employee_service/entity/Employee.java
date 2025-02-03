@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "employees")
-@JsonPropertyOrder({ "employeeId", "name", "designation", "skills", "status", "joiningDate", "projectId" })
+@JsonPropertyOrder({ "employeeid", "name", "designation", "skills", "status", "joiningDate", "projectId" })
 public class Employee {
 
     @Id
