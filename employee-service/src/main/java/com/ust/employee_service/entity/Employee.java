@@ -15,7 +15,12 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "employees")
-@JsonPropertyOrder({ "employeeid", "name", "designation", "skills", "status", "joiningDate", "projectId" })
+@JsonPropertyOrder({
+    "employeeid", "firstName", "lastName", "designation", "emailId", "phoneNumber", 
+    "skills", "status", "joiningDate", "experience", "projectId", "reportingManager", 
+    "currentLocation", "address", "city", "country", "currentSalary", "bankName", 
+    "accountNumber", "panNumber"
+})
 public class Employee {
 
     @Id
@@ -24,13 +29,23 @@ public class Employee {
             name = "custom-id-generator",
             strategy = "com.ust.employee_service.Generator.CustomIdGenerator"
     )
-    private String employeeid;
+    private String employeeId;
 
     @Column(nullable = false)
-    private String name;
+    private String firstName;
+
+    @Column(nullable = false)
+    private String lastName;
 
     @Column(nullable = false)
     private String designation;
+
+    @Column(name="email_id",nullable = false)
+    private String emailId;
+
+
+    @Column(name="phone_number",nullable = false)
+    private String phoneNumber;
 
     @Column(nullable = false)
     private String skills;
@@ -40,8 +55,26 @@ public class Employee {
 
     private LocalDate joiningDate;
 
+    @Column(name="experience",nullable = false)
+    private String experience;
+
     @Column(name = "project_id") // Assuming a foreign key to the project
     private String projectId;
+
+    @Column(name="reporting_manager",nullable = false)
+    private String reportingManager;
+
+    @Column(name="current_location",nullable = false)
+    private String currentLocation;
+
+    @Column(name="address",nullable = false)
+    private String address;
+
+    @Column(name="city",nullable = false)
+    private String city;
+
+    @Column(name="country",nullable = false)  
+    private String country;
 
     @Column(name="current_salary",nullable = false)
     private Long currentSalary;
@@ -66,16 +99,26 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String employeeid, String name, String designation, String skills, Status status,
-            LocalDate joiningDate, String projectId, Long currentSalary, String bankName, String accountNumber,
-            String panNumber) {
-        this.employeeid = employeeid;
-        this.name = name;
+    public Employee(String employeeId, String firstName, String lastName, String designation, String emailId,
+            String phoneNumber, String skills, Status status, LocalDate joiningDate, String experience,
+            String projectId, String reportingManager, String currentLocation, String address, String city,
+            String country, Long currentSalary, String bankName, String accountNumber, String panNumber) {
+        this.employeeId = employeeId;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.designation = designation;
+        this.emailId = emailId;
+        this.phoneNumber = phoneNumber;
         this.skills = skills;
         this.status = status;
         this.joiningDate = joiningDate;
+        this.experience = experience;
         this.projectId = projectId;
+        this.reportingManager = reportingManager;
+        this.currentLocation = currentLocation;
+        this.address = address;
+        this.city = city;
+        this.country = country;
         this.currentSalary = currentSalary;
         this.bankName = bankName;
         this.accountNumber = accountNumber;
@@ -83,19 +126,27 @@ public class Employee {
     }
 
     public String getEmployeeid() {
-        return employeeid;
+        return employeeId;
     }
 
-    public void setEmployeeid(String employeeid) {
-        this.employeeid = employeeid;
+    public void setEmployeeid(String employeeId) {
+        this.employeeId = employeeId;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getDesignation() {
@@ -104,6 +155,22 @@ public class Employee {
 
     public void setDesignation(String designation) {
         this.designation = designation;
+    }
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getSkills() {
@@ -130,12 +197,60 @@ public class Employee {
         this.joiningDate = joiningDate;
     }
 
+    public String getExperience() {
+        return experience;
+    }
+
+    public void setExperience(String experience) {
+        this.experience = experience;
+    }
+
     public String getProjectId() {
         return projectId;
     }
 
     public void setProjectId(String projectId) {
         this.projectId = projectId;
+    }
+
+    public String getReportingManager() {
+        return reportingManager;
+    }
+
+    public void setReportingManager(String reportingManager) {
+        this.reportingManager = reportingManager;
+    }
+
+    public String getCurrentLocation() {
+        return currentLocation;
+    }
+
+    public void setCurrentLocation(String currentLocation) {
+        this.currentLocation = currentLocation;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public Long getCurrentSalary() {
@@ -169,7 +284,6 @@ public class Employee {
     public void setPanNumber(String panNumber) {
         this.panNumber = panNumber;
     }
-
 
     
 }

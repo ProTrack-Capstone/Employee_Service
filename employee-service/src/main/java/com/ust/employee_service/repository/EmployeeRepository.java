@@ -9,4 +9,7 @@ import com.ust.employee_service.entity.Employee;
 public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
     List<Employee> findByProjectId(String projectId);
+
+    List<Employee> findByStatus(Employee.Status status);
+
 }
