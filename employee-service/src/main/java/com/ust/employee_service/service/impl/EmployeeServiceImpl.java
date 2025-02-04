@@ -1,6 +1,7 @@
 package com.ust.employee_service.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,11 @@ import com.ust.employee_service.service.EmployeeService;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
+
+    @Override
+    public List<Employee> getEmployeesByStatus(Employee.Status status) {
+        return employeeRepository.findByStatus(status);
+    }
 
     private final EmployeeRepository employeeRepository;
 
@@ -31,34 +37,35 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-public Employee updateEmployee(String employeeid, Employee employee) {
-    Employee existingEmployee = employeeRepository.findById(employeeid)
-            .orElseThrow(() -> new RuntimeException("Employee not found"));
+    public Employee updateEmployee(String employeeId, Employee employee) {
+        Employee existingEmployee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
 
-    existingEmployee.setName(employee.getName());
-    existingEmployee.setDesignation(employee.getDesignation());
-    existingEmployee.setSkills(employee.getSkills());
-    existingEmployee.setStatus(employee.getStatus());
-    existingEmployee.setJoiningDate(employee.getJoiningDate());
-    existingEmployee.setProjectId(employee.getProjectId());
-    existingEmployee.setCurrentSalary(employee.getCurrentSalary());  // Ensure this line exists
-    existingEmployee.setBankName(employee.getBankName());
-    existingEmployee.setAccountNumber(employee.getAccountNumber());
-    existingEmployee.setPanNumber(employee.getPanNumber());
+        existingEmployee.setFirstName(employee.getFirstName());
+        existingEmployee.setLastName(employee.getLastName());
+        existingEmployee.setDesignation(employee.getDesignation());
+        existingEmployee.setSkills(employee.getSkills());
+        existingEmployee.setStatus(employee.getStatus());
+        existingEmployee.setJoiningDate(employee.getJoiningDate());
+        existingEmployee.setProjectId(employee.getProjectId());
+        existingEmployee.setCurrentSalary(employee.getCurrentSalary());  // Ensure this line exists
+        existingEmployee.setBankName(employee.getBankName());
+        existingEmployee.setAccountNumber(employee.getAccountNumber());
+        existingEmployee.setPanNumber(employee.getPanNumber());
 
-    return employeeRepository.save(existingEmployee);
-}
+        return employeeRepository.save(existingEmployee);
+    }
 
 
     @Override
-    public void deleteEmployee(String employeeid) {
-        employeeRepository.deleteById(employeeid);
+    public void deleteEmployee(String employeeId) {
+        employeeRepository.deleteById(employeeId);
     }
 
     @Override
-    public Employee getEmployeeById(String employeeid) {
-        return employeeRepository.findById(employeeid)
-                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + employeeid));
+    public Employee getEmployeeById(String employeeId) {
+        return employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + employeeId));
     }
 
     @Override
@@ -66,15 +73,42 @@ public Employee updateEmployee(String employeeid, Employee employee) {
         return employeeRepository.findByProjectId(projectId);
     }
 
+    // @Override
+    // public Employee assignEmployeeToProject(String employeeId, String projectId) {
+    //     Employee existingEmployee = employeeRepository.findById(employeeId)
+    //             .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+    //     // Set the projectId and change availability
+    //     existingEmployee.setProjectId(projectId);
+    //     existingEmployee.setStatus(Employee.Status.ASSIGNED);
+
+    //     return employeeRepository.save(existingEmployee);
+    // }
+
     @Override
-    public Employee assignEmployeeToProject(String employeeid, String projectId) {
-        Employee existingEmployee = employeeRepository.findById(employeeid)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+    public void updateEmployeesStatus(List<String> employeeIds, String projectId) {
+        List<Employee> employees = employeeRepository.findAllById(employeeIds);
 
-        // Set the projectId and change availability
-        existingEmployee.setProjectId(projectId);
-        existingEmployee.setStatus(Employee.Status.ASSIGNED);
+        if (employees.isEmpty()) {
+            throw new RuntimeException("No employees found with given IDs");
+        }
 
-        return employeeRepository.save(existingEmployee);
+        // Update projectId and status for all employees
+        employees.forEach(employee -> {
+            employee.setProjectId(projectId);
+            employee.setStatus(Employee.Status.ASSIGNED);
+        });
+
+        employeeRepository.saveAll(employees);
     }
+
+    @Override
+    public List<Employee> getUnassignedEmployees() {
+        List<Employee> employees = employeeRepository.findByStatus(Employee.Status.UNASSIGNED);
+        return employees.stream()
+                .map(emp -> new Employee(emp.getEmployeeid(), emp.getFirstName(), emp.getLastName(), emp.getDesignation(), emp.getSkills(), null, null, null, null, null, null, null, null, null, null, null, emp.getCurrentSalary(), null, null, null))
+                .collect(Collectors.toList());
+    }
+
+
 }

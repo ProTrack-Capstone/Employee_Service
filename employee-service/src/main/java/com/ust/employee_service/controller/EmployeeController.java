@@ -10,19 +10,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ust.employee_service.entity.Employee;
+import com.ust.employee_service.repository.EmployeeRepository;
 import com.ust.employee_service.service.EmployeeService;
 
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeController {
+    
 
     private final EmployeeService employeeService;
+    private final EmployeeRepository employeeRepository;
 
-    public EmployeeController(EmployeeService employeeService) {
+    public EmployeeController(EmployeeService employeeService, EmployeeRepository employeeRepository) {
         this.employeeService = employeeService;
+        this.employeeRepository = employeeRepository;
     }
 
     @PostMapping
@@ -36,30 +41,47 @@ public class EmployeeController {
     }
 
     // PUT endpoint to assign employee to a project
-    @PutMapping("/{employeeid}/assign/{projectId}")
-    public ResponseEntity<Employee> assignEmployeeToProject(@PathVariable String employeeid, @PathVariable String projectId) {
-        return ResponseEntity.ok(employeeService.assignEmployeeToProject(employeeid, projectId));
+    // @PutMapping("/{employeeId}/assign/{projectId}")
+    // public ResponseEntity<Employee> assignEmployeeToProject(@PathVariable String employeeId, @PathVariable String projectId) {
+    //     return ResponseEntity.ok(employeeService.assignEmployeeToProject(employeeId, projectId));
+    // }
+
+    @PutMapping("/{employeeId}")
+    public ResponseEntity<Employee> updateEmployee(@PathVariable("employeeId") String employeeId, @RequestBody Employee employee) {
+        return ResponseEntity.ok(employeeService.updateEmployee(employeeId, employee));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable ("id")String employeeid, @RequestBody Employee employee) {
-        return ResponseEntity.ok(employeeService.updateEmployee(employeeid, employee));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEmployee(@PathVariable("id") String employeeid) {
-        employeeService.deleteEmployee(employeeid);
+    @DeleteMapping("/{employeeId}")
+    public ResponseEntity<Void> deleteEmployee(@PathVariable("employeeId") String employeeId) {
+        employeeService.deleteEmployee(employeeId);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") String employeeid) {
-        return ResponseEntity.ok(employeeService.getEmployeeById(employeeid));
+    @GetMapping("/{employeeId}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable("employeeId") String employeeId) {
+        return ResponseEntity.ok(employeeService.getEmployeeById(employeeId));
     }
+
+    @GetMapping("/unassigned")
+public ResponseEntity<List<Employee>> getUnassignedEmployees() {
+    List<Employee> unassignedEmployees = employeeRepository.findByStatus(Employee.Status.UNASSIGNED);
+    return ResponseEntity.ok(unassignedEmployees);
+}
+
 
     @GetMapping("/projects/{projectId}")
     public ResponseEntity<List<Employee>> getEmployeesByProject(@PathVariable String projectId) {
         List<Employee> employees = employeeService.getEmployeesByProjectId(projectId);
         return ResponseEntity.ok(employees);
     }
+
+    @PutMapping("/update-status")
+    public ResponseEntity<String> updateEmployeesStatus(
+            @RequestBody List<String> employeeIds,
+            @RequestParam String projectId) {
+
+        employeeService.updateEmployeesStatus(employeeIds, projectId);
+        return ResponseEntity.ok("Employee statuses updated successfully");
+    }
+
 }
